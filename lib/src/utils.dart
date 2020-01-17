@@ -50,7 +50,13 @@ abstract class GoogleWebService {
   void dispose() => httpClient.close();
 
   @protected
-  Future<Response> doGet(String url) => httpClient.get(url);
+  Future<Response> doGet(String url, {Map<String, String> headerParams}) {
+    if (headerParams != null && headerParams.isNotEmpty) {
+      return httpClient.get(url, headers: headerParams);
+    } else {
+      return httpClient.get(url);
+    }
+  }
 
   @protected
   Future<Response> doPost(String url, String body) {

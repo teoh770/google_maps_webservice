@@ -10,11 +10,10 @@ const _geocodeUrl = '/geocode/json';
 
 /// https://developers.google.com/maps/documentation/geocoding/start
 class GoogleMapsGeocoding extends GoogleWebService {
-  GoogleMapsGeocoding({
-    String apiKey,
-    String baseUrl,
-    Client httpClient,
-  }) : super(
+  final Map<String, String> headerParams;
+  GoogleMapsGeocoding(
+      {String apiKey, String baseUrl, Client httpClient, this.headerParams})
+      : super(
           apiKey: apiKey,
           baseUrl: baseUrl,
           url: _geocodeUrl,
@@ -34,7 +33,7 @@ class GoogleMapsGeocoding extends GoogleWebService {
         language: language,
         region: region,
         components: components);
-    return _decode(await doGet(url));
+    return _decode(await doGet(url, headerParams: headerParams));
   }
 
   Future<GeocodingResponse> searchByComponents(
@@ -48,7 +47,7 @@ class GoogleMapsGeocoding extends GoogleWebService {
         language: language,
         region: region,
         components: components);
-    return _decode(await doGet(url));
+    return _decode(await doGet(url, headerParams: headerParams));
   }
 
   Future<GeocodingResponse> searchByLocation(
@@ -62,7 +61,7 @@ class GoogleMapsGeocoding extends GoogleWebService {
         language: language,
         resultType: resultType,
         locationType: locationType);
-    return _decode(await doGet(url));
+    return _decode(await doGet(url, headerParams: headerParams));
   }
 
   Future<GeocodingResponse> searchByPlaceId(
@@ -76,7 +75,7 @@ class GoogleMapsGeocoding extends GoogleWebService {
         language: language,
         resultType: resultType,
         locationType: locationType);
-    return _decode(await doGet(url));
+    return _decode(await doGet(url, headerParams: headerParams));
   }
 
   String buildUrl({
@@ -217,7 +216,8 @@ class StreetAddress {
   );
 
   factory StreetAddress.fromGeocodingResult(GeocodingResult geocodingResult) {
-    if (geocodingResult == null || !geocodingResult.types.contains('street_address')) return null;
+    if (geocodingResult == null ||
+        !geocodingResult.types.contains('street_address')) return null;
 
     AddressComponent search(String type) {
       return geocodingResult.addressComponents.firstWhere(
