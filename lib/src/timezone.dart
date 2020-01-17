@@ -10,11 +10,10 @@ const _timezoneUrl = '/timezone/json';
 
 /// https://developers.google.com/maps/documentation/timezone/start
 class GoogleMapsTimezone extends GoogleWebService {
-  GoogleMapsTimezone({
-    String apiKey,
-    String baseUrl,
-    Client httpClient,
-  }) : super(
+  final Map<String, String> headerParams;
+  GoogleMapsTimezone(
+      {String apiKey, String baseUrl, Client httpClient, this.headerParams})
+      : super(
           apiKey: apiKey,
           baseUrl: baseUrl,
           url: _timezoneUrl,
@@ -30,7 +29,7 @@ class GoogleMapsTimezone extends GoogleWebService {
     String language,
   }) async {
     final requestUrl = buildUrl(location, timestamp, language);
-    return _decode(await doGet(requestUrl));
+    return _decode(await doGet(requestUrl, headerParams: headerParams));
   }
 
   String buildUrl(

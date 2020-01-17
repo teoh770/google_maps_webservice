@@ -10,11 +10,10 @@ const _directionsUrl = '/directions/json';
 
 /// https://developers.google.com/maps/documentation/directions/start
 class GoogleMapsDirections extends GoogleWebService {
-  GoogleMapsDirections({
-    String apiKey,
-    String baseUrl,
-    Client httpClient,
-  }) : super(
+  final Map<String, String> headerParams;
+  GoogleMapsDirections(
+      {String apiKey, String baseUrl, Client httpClient, this.headerParams})
+      : super(
           apiKey: apiKey,
           baseUrl: baseUrl,
           url: _directionsUrl,
@@ -53,7 +52,7 @@ class GoogleMapsDirections extends GoogleWebService {
       trafficModel: trafficModel,
       transitRoutingPreference: transitRoutingPreference,
     );
-    return _decode(await doGet(url));
+    return _decode(await doGet(url, headerParams: headerParams));
   }
 
   Future<DirectionsResponse> directionsWithLocation(

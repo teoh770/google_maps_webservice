@@ -12,10 +12,12 @@ const _distanceUrl = '/distancematrix/json';
 
 ///https://developers.google.com/maps/documentation/distance-matrix/intro
 class GoogleDistanceMatrix extends GoogleWebService {
+  final Map<String, String> headerParams;
   GoogleDistanceMatrix({
     String apiKey,
     String baseUrl,
     Client httpClient,
+    this.headerParams
   }) : super(
             apiKey: apiKey,
             baseUrl: baseUrl,
@@ -53,7 +55,7 @@ class GoogleDistanceMatrix extends GoogleWebService {
       transitRoutingPreference: transitRoutingPreference,
     );
 
-    return _decode(await doGet(url));
+    return _decode(await doGet(url, headerParams: headerParams));
   }
 
   Future<DistanceResponse> distanceWithLocation(
